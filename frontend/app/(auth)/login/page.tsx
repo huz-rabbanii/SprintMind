@@ -20,7 +20,9 @@ export default function LoginPage() {
       setAuth(data.access_token, data.refresh_token)
       router.replace('/dashboard')
     } catch (err: any) {
-      toast.error(err.response?.data?.detail || 'Login failed')
+      const detail = err.response?.data?.detail
+      const msg = Array.isArray(detail) ? detail.map((d: any) => d.msg).join(', ') : detail || 'Login failed'
+      toast.error(msg)
     } finally {
       setLoading(false)
     }

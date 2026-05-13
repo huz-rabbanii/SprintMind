@@ -23,7 +23,9 @@ export default function RegisterPage() {
       toast.success('Account created! Check your email to verify.')
       router.replace('/login')
     } catch (err: any) {
-      toast.error(err.response?.data?.detail || 'Registration failed')
+      const detail = err.response?.data?.detail
+      const msg = Array.isArray(detail) ? detail.map((d: any) => d.msg).join(', ') : detail || 'Registration failed'
+      toast.error(msg)
     } finally {
       setLoading(false)
     }
