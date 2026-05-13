@@ -12,7 +12,7 @@ from schemas import NotificationOut
 router = APIRouter(prefix="/notifications", tags=["notifications"])
 
 
-@router.get("/", response_model=list[NotificationOut])
+@router.get("", response_model=list[NotificationOut])
 async def list_notifications(
     unread_only: bool = False,
     db: AsyncSession = Depends(get_db),

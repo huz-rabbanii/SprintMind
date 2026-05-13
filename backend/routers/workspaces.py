@@ -19,7 +19,7 @@ def _slugify(name: str) -> str:
     return slug + "-" + str(uuid.uuid4())[:8]
 
 
-@router.post("/", response_model=WorkspaceOut, status_code=201)
+@router.post("", response_model=WorkspaceOut, status_code=201)
 async def create_workspace(
     body: WorkspaceCreate,
     db: AsyncSession = Depends(get_db),
@@ -34,7 +34,7 @@ async def create_workspace(
     return ws
 
 
-@router.get("/", response_model=list[WorkspaceOut])
+@router.get("", response_model=list[WorkspaceOut])
 async def list_workspaces(db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user)):
     result = await db.execute(
         select(Workspace)

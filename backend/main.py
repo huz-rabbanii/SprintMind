@@ -19,6 +19,7 @@ app = FastAPI(
     description="AI-powered collaborative Kanban SaaS API",
     version="1.0.0",
     lifespan=lifespan,
+    redirect_slashes=False,
 )
 
 app.add_middleware(
