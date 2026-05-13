@@ -1,0 +1,16 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: process.env.NEXT_PUBLIC_API_URL
+          ? `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
+          : 'http://localhost:8000/api/:path*',
+      },
+    ]
+  },
+  images: { domains: ['avatars.githubusercontent.com', 'lh3.googleusercontent.com'] },
+}
+
+module.exports = nextConfig
