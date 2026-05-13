@@ -54,6 +54,21 @@ export default function AIPanel({ boardId }: Props) {
     setOpen(false)
   }
 
+  const addSprintToBoard = async () => {
+    if (!result?.milestones) return
+    const todoCol = columns.find(c => c.name.toLowerCase() === 'todo') ?? columns[0]
+    if (!todoCol) return
+    let count = 0
+    for (const milestone of result.milestones) {
+      for (const task of milestone.tasks) {
+        await createTask(todoCol.id, task, { ai_generated: true })
+        count++
+      }
+    }
+    toast.success(`${count} sprint tasks added to board!`)
+    setOpen(false)
+  }
+
   return (
     <>
       <button
@@ -168,9 +183,14 @@ export default function AIPanel({ boardId }: Props) {
 
               {result && tab === 'sprint' && (
                 <div className="space-y-3 max-h-64 overflow-y-auto">
-                  <p className="text-xs text-muted">
-                    {result.total_tasks} tasks · risk: <span className="text-accent">{result.risk_level}</span>
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-muted">
+                      {result.total_tasks} tasks · risk: <span className="text-accent">{result.risk_level}</span>
+                    </p>
+                    <button onClick={addSprintToBoard} className="text-xs bg-green/10 text-green border border-green/20 px-3 py-1 rounded">
+                      + Add all to board
+                    </button>
+                  </div>
                   {result.milestones.map((m: any) => (
                     <div key={m.week} className="bg-s2 rounded-lg p-3">
                       <p className="text-sm font-semibold text-accent">Week {m.week}: {m.title}</p>
