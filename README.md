@@ -1,4 +1,4 @@
-# TaskFlow AI
+# SprintMind 
 
 > AI-powered collaborative Kanban SaaS with real-time collaboration, GitHub integration, intelligent task planning, analytics, and modern DevOps workflows.
 
