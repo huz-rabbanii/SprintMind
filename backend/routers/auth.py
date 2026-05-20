@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
@@ -6,7 +5,7 @@ from jose import JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_db
-from dependencies import get_current_user, get_current_verified_user
+from dependencies import get_current_user
 from models import User
 from schemas import (
     ChangePassword, LoginRequest, PasswordResetConfirm, PasswordResetRequest,
