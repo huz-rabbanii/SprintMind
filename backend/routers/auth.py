@@ -9,8 +9,8 @@ from database import get_db
 from dependencies import get_current_user, get_current_verified_user
 from models import User
 from schemas import (
-    LoginRequest, PasswordResetConfirm, PasswordResetRequest,
-    RefreshRequest, RegisterRequest, TokenResponse, UserOut,
+    ChangePassword, LoginRequest, PasswordResetConfirm, PasswordResetRequest,
+    ProfileUpdate, RefreshRequest, RegisterRequest, TokenResponse, UserOut,
 )
 from services.auth import (
     authenticate_user, create_access_token, create_refresh_token,
@@ -124,3 +124,39 @@ async def reset_password(body: PasswordResetConfirm, db: AsyncSession = Depends(
 @router.get("/me", response_model=UserOut)
 async def me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.patch("/me", response_model=UserOut)
+async def update_profile(
+    body: ProfileUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    if body.full_name is not None:
+        current_user.full_name = body.full_name
+    if body.username is not None:
+        # Check username uniqueness
+        from sqlalchemy import select
+        result = await db.execute(
+            select(User).where(User.username == body.username, User.id != current_user.id)
+        )
+        if result.scalar_one_or_none():
+            raise HTTPException(status_code=400, detail="Username already taken")
+        current_user.username = body.username
+    await db.commit()
+    await db.refresh(current_user)
+    return current_user
+
+
+@router.post("/change-password")
+async def change_password(
+    body: ChangePassword,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    from services.auth import verify_password
+    if not verify_password(body.current_password, current_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    current_user.hashed_password = hash_password(body.new_password)
+    await db.commit()
+    return {"message": "Password changed successfully"}
