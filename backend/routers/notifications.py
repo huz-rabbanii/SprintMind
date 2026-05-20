@@ -20,7 +20,7 @@ async def list_notifications(
 ):
     q = select(Notification).where(Notification.user_id == user.id).order_by(Notification.created_at.desc()).limit(50)
     if unread_only:
-        q = q.where(Notification.is_read == False)
+        q = q.where(Notification.is_read.is_(False))
     result = await db.execute(q)
     return result.scalars().all()
 
@@ -47,7 +47,7 @@ async def mark_all_read(
 ):
     await db.execute(
         update(Notification)
-        .where(Notification.user_id == user.id, Notification.is_read == False)
+        .where(Notification.user_id == user.id, Notification.is_read.is_(False))
         .values(is_read=True)
     )
     await db.commit()

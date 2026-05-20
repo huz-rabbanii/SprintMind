@@ -1,7 +1,7 @@
 import re
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -84,7 +84,6 @@ async def invite_member(
             await db.commit()
 
     # Send invite email regardless
-    from fastapi import BackgroundTasks
     await send_invite_email(body.email, ws.name, user.full_name)
     return {"message": f"Invitation sent to {body.email}"}
 

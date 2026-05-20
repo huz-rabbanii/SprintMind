@@ -1,5 +1,4 @@
 from celery_app import celery_app
-from config import settings
 
 
 @celery_app.task(name="tasks.notifications.send_due_date_reminders")

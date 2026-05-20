@@ -7,10 +7,9 @@ def sync_board_prs(board_id: str, github_token: str, repo: str):
     import asyncio
 
     from sqlalchemy import select
-    from sqlalchemy.orm import selectinload
 
     from database import AsyncSessionLocal
-    from models import Board, Column, Task
+    from models import Column, Task
     from services.github import get_repo_prs
 
     async def _run():

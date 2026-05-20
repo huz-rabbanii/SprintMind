@@ -1,9 +1,7 @@
-import uuid
 
-from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from jose import JWTError
 
-from config import settings
 from services.realtime import manager
 from services.auth import decode_token
 

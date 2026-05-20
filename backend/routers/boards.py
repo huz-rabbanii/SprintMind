@@ -1,14 +1,13 @@
-import re
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from database import get_db
 from dependencies import get_current_user
-from models import Board, Column, User, Workspace, WorkspaceMember, UserRole
+from models import Board, Column, User, WorkspaceMember
 from schemas import BoardCreate, BoardOut, ColumnCreate, ColumnOut
 
 router = APIRouter(prefix="/boards", tags=["boards"])

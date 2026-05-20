@@ -1,4 +1,3 @@
-import json
 import uuid
 from datetime import datetime, timedelta, timezone
 
@@ -8,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_db
 from dependencies import get_current_user
-from models import Board, Column, Task, TaskStatus, User, Workspace, WorkspaceMember
+from models import Board, Column, Task, User, WorkspaceMember
 
 router = APIRouter(prefix="/analytics", tags=["analytics"])
 
